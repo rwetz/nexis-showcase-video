@@ -1,12 +1,16 @@
 # Nexis showcase loop
 
-The 25-second silent loop in the "One window, every job." (`#tour`) section of
-nexisdev.org. It is built from real Nexis 1.30.1 screenshots (`assets/shots/`),
-captured by Nexis's `e2e/specs/screenshots.test.ts`. Intent and constraints live
-in `BRIEF.md`.
+The 26-second silent loop in the "One window, every job." (`#tour`) section of
+nexisdev.org. It is cut from real app clips (`assets/clips/`) that Nexis's
+`e2e/specs/clips.test.ts` screencasts straight from the app's webview: welcome,
+Spotlight, terminal, AI agent, Documents and theme switching. Intent and
+constraints live in `BRIEF.md`. `assets/shots/` holds the earlier still-image cut's
+screenshots.
 
-- Composition: `index.html` (1600×1000, 30 fps, 25 s). The welcome screen opens
-  and closes the timeline, so the last frame equals frame 0 and the loop has no seam.
+- Composition: `index.html` (1600×1000, 30 fps, 26.3 s). It closes on a still of the
+  welcome clip's first frame, so the last frame equals frame 0 and the loop has no seam.
+- New clips: in Nexis, `NEXIS_CLIPS=1 NEXIS_E2E_WORKSPACE=. pnpm test:e2e --spec e2e/specs/clips.test.ts`
+  against the screenshot build, then copy `e2e/clips/*.mp4` into `assets/clips/`.
 - Checks: `npm run check`
 
 ## Re-render for the site

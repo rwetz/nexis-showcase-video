@@ -6,7 +6,7 @@ message: "Nexis is one window for the whole job: find, ask, build, ship."
 destination: website-embed
 aspect: 1600x1000
 language: en
-length: 24s
+length: 26s
 angle: product-showcase
 ---
 
@@ -26,6 +26,8 @@ recording live clips or installing Remotion.
   Scenes: Spotlight, AI panel + orb, Atlas, SVG Studio, Documents, terminal, editor.
 
 ## Customizations
+
+- 2026-10-02: re-cut from real screencast clips (user: "record real app clips for the video"). No AI prompt is sent; the AI scene shows the idle orb.
 
 - Seamless loop: the last frame must match the first.
 - Deliverables: H.264 MP4 + WebM, each ≤ 3 MB, plus a poster JPG from frame 0.

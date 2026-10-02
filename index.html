@@ -36,32 +36,27 @@
         background: #0c1118;
         font-family: "Geist", ui-sans-serif, system-ui, sans-serif;
       }
-      .scene {
-        position: absolute;
-        inset: 0;
-        overflow: hidden;
-      }
-      .fade {
+      /* Untimed wrappers carry the crossfade; the <video> inside carries the timing. */
+      .layer {
         position: absolute;
         inset: 0;
       }
-      .cam {
+      .layer video,
+      .layer img {
         position: absolute;
         inset: 0;
-        transform-origin: 50% 50%;
-      }
-      .cam img {
-        display: block;
         width: 100%;
         height: 100%;
         object-fit: cover;
       }
-      /* Soft vignette so the caption chip always sits on a darker corner. */
       .shade {
         position: absolute;
         inset: 0;
         background: radial-gradient(120% 90% at 0% 100%, rgba(8, 11, 16, 0.55) 0%, rgba(8, 11, 16, 0) 45%);
-        pointer-events: none;
+      }
+      .slot {
+        position: absolute;
+        inset: 0;
       }
       .chip {
         position: absolute;
@@ -106,116 +101,85 @@
     </style>
   </head>
   <body>
-    <div id="root" data-composition-id="main" data-start="0" data-duration="25" data-fps="30" data-width="1600" data-height="1000">
-      <!-- Scenes are stacked in time order: each one fades in over the one before it, so there is never a dip to black. -->
-      <div id="s0" class="scene clip" data-start="0" data-duration="2.7" data-track-index="0">
-        <div class="fade"><div class="cam"><img src="assets/shots/welcome.webp" alt="" /></div></div>
+    <!--
+      Real app motion, screencast from the Nexis webview by e2e/specs/clips.test.ts.
+      Each layer overlaps the next by 0.6 s; the closing still is the welcome clip's
+      first frame, so the last frame equals frame 0 and the loop has no seam.
+    -->
+    <div id="root" data-composition-id="main" data-start="0" data-duration="26.3" data-fps="30" data-width="1600" data-height="1000">
+      <div id="l1" class="layer">
+        <video id="v1" src="assets/clips/welcome.mp4" muted playsinline data-start="0" data-duration="4" data-media-start="0.25" data-track-index="0"></video>
+      </div>
+      <div id="l2" class="layer">
+        <video id="v2" src="assets/clips/spotlight.mp4" muted playsinline data-start="3.4" data-duration="6" data-media-start="1.4" data-playback-rate="1.25" data-track-index="1"></video>
+        <div class="shade"></div>
+      </div>
+      <div id="l3" class="layer">
+        <video id="v3" src="assets/clips/terminal.mp4" muted playsinline data-start="8.8" data-duration="3.8" data-media-start="0.2" data-track-index="2"></video>
+        <div class="shade"></div>
+      </div>
+      <div id="l4" class="layer">
+        <video id="v4" src="assets/clips/ai-orb.mp4" muted playsinline data-start="12" data-duration="4.2" data-media-start="2" data-track-index="3"></video>
+        <div class="shade"></div>
+      </div>
+      <div id="l5" class="layer">
+        <video id="v5" src="assets/clips/documents.mp4" muted playsinline data-start="15.6" data-duration="6.2" data-media-start="1" data-playback-rate="1.5" data-track-index="4"></video>
+        <div class="shade"></div>
+      </div>
+      <div id="l6" class="layer">
+        <video id="v6" src="assets/clips/themes.mp4" muted playsinline data-start="21.2" data-duration="5" data-media-start="0.2" data-track-index="5"></video>
+        <div class="shade"></div>
+      </div>
+      <div id="l7" class="layer clip" data-start="25.6" data-duration="0.7" data-track-index="6">
+        <img src="assets/clips/welcome-start.png" alt="" />
       </div>
 
-      <div id="s1" class="scene clip" data-start="2" data-duration="4.2" data-track-index="1">
-        <div class="fade">
-          <div class="cam"><img src="assets/shots/spotlight.webp" alt="" /></div>
-          <div class="shade"></div>
-          <div class="chip" data-layout-allow-overlap data-layout-allow-occlusion><span class="dot"></span><div class="chip-text"><span class="chip-title">Spotlight</span><span class="chip-sub">Files and commands, with a live preview</span></div></div>
-        </div>
+      <div id="c2" class="slot clip" data-start="3.4" data-duration="6" data-track-index="10">
+        <div class="chip" data-layout-allow-overlap data-layout-allow-occlusion><span class="dot"></span><div class="chip-text"><span class="chip-title">Spotlight</span><span class="chip-sub">Files and commands, with a live preview</span></div></div>
       </div>
-
-      <div id="s2" class="scene clip" data-start="5.5" data-duration="4.2" data-track-index="2">
-        <div class="fade">
-          <div class="cam"><img src="assets/shots/ai.webp" alt="" /></div>
-          <div class="shade"></div>
-          <div class="chip" data-layout-allow-overlap data-layout-allow-occlusion><span class="dot"></span><div class="chip-text"><span class="chip-title">AI agent</span><span class="chip-sub">Chat, queue, refactor and review in one window</span></div></div>
-        </div>
+      <div id="c3" class="slot clip" data-start="8.8" data-duration="3.8" data-track-index="11">
+        <div class="chip" data-layout-allow-overlap data-layout-allow-occlusion><span class="dot"></span><div class="chip-text"><span class="chip-title">Terminal</span><span class="chip-sub">Native PTY, WebGL rendering, shell integration</span></div></div>
       </div>
-
-      <div id="s3" class="scene clip" data-start="9" data-duration="4.2" data-track-index="3">
-        <div class="fade">
-          <div class="cam"><img src="assets/shots/editor.webp" alt="" /></div>
-          <div class="shade"></div>
-          <div class="chip" data-layout-allow-overlap data-layout-allow-occlusion><span class="dot"></span><div class="chip-text"><span class="chip-title">Editor</span><span class="chip-sub">AI completions and per-hunk diff approval</span></div></div>
-        </div>
+      <div id="c4" class="slot clip" data-start="12" data-duration="4.2" data-track-index="12">
+        <div class="chip" data-layout-allow-overlap data-layout-allow-occlusion><span class="dot"></span><div class="chip-text"><span class="chip-title">AI agent</span><span class="chip-sub">Your keys or a local model, with an animated orb</span></div></div>
       </div>
-
-      <div id="s4" class="scene clip" data-start="12.5" data-duration="4.2" data-track-index="4">
-        <div class="fade">
-          <div class="cam"><img src="assets/shots/documents-editor.webp" alt="" /></div>
-          <div class="shade"></div>
-          <div class="chip" data-layout-allow-overlap data-layout-allow-occlusion><span class="dot"></span><div class="chip-text"><span class="chip-title">Documents</span><span class="chip-sub">Markdown and Word, with local PDF export</span></div></div>
-        </div>
+      <div id="c5" class="slot clip" data-start="15.6" data-duration="6.2" data-track-index="13">
+        <div class="chip" data-layout-allow-overlap data-layout-allow-occlusion><span class="dot"></span><div class="chip-text"><span class="chip-title">Documents</span><span class="chip-sub">Markdown and Word, with local PDF export</span></div></div>
       </div>
-
-      <div id="s5" class="scene clip" data-start="16" data-duration="4.2" data-track-index="5">
-        <div class="fade">
-          <div class="cam"><img src="assets/shots/atlas.webp" alt="" /></div>
-          <div class="shade"></div>
-          <div class="chip" data-layout-allow-overlap data-layout-allow-occlusion><span class="dot"></span><div class="chip-text"><span class="chip-title">Atlas</span><span class="chip-sub">Every repo on the machine, with a commit heatmap</span></div></div>
-        </div>
-      </div>
-
-      <div id="s6" class="scene clip" data-start="19.5" data-duration="4.2" data-track-index="6">
-        <div class="fade">
-          <div class="cam"><img src="assets/shots/svg-studio.webp" alt="" /></div>
-          <div class="shade"></div>
-          <div class="chip" data-layout-allow-overlap data-layout-allow-occlusion><span class="dot"></span><div class="chip-text"><span class="chip-title">SVG Studio</span><span class="chip-sub">Backdrops, palettes, icons and favicons</span></div></div>
-        </div>
-      </div>
-
-      <!-- Back to the welcome screen at rest: the last frame equals frame 0, so the loop has no seam. -->
-      <div id="s7" class="scene clip" data-start="23" data-duration="2" data-track-index="7">
-        <div class="fade"><div class="cam"><img src="assets/shots/welcome.webp" alt="" /></div></div>
+      <div id="c6" class="slot clip" data-start="21.2" data-duration="5" data-track-index="14">
+        <div class="chip" data-layout-allow-overlap data-layout-allow-occlusion><span class="dot"></span><div class="chip-text"><span class="chip-title">Themes</span><span class="chip-sub">22 built-in themes, live as you click</span></div></div>
       </div>
     </div>
 
     <script>
-      const W = 1600;
-      const H = 1000;
-      const XFADE = 0.7;
-
-      // Where each scene's camera pushes: the feature's centre in screenshot pixels, and the zoom.
-      // Offsets are computed once here and clamped so the image never pulls away from a frame edge.
-      const scenes = [
-        { id: "s1", start: 2.0, cx: 800, cy: 410, scale: 1.28 },
-        { id: "s2", start: 5.5, cx: 1310, cy: 560, scale: 1.32 },
-        { id: "s3", start: 9.0, cx: 860, cy: 430, scale: 1.12 },
-        { id: "s4", start: 12.5, cx: 760, cy: 400, scale: 1.16 },
-        { id: "s5", start: 16.0, cx: 1120, cy: 380, scale: 1.18 },
-        { id: "s6", start: 19.5, cx: 520, cy: 520, scale: 1.14 },
-      ];
-      const HOLD = 4.2; // each scene's clip length: its own beat plus the next scene's fade
-
-      function target(s) {
-        const maxX = ((s.scale - 1) * W) / 2;
-        const maxY = ((s.scale - 1) * H) / 2;
-        const clamp = (v, m) => Math.max(-m, Math.min(m, v));
-        return {
-          x: clamp(-s.scale * (s.cx - W / 2), maxX),
-          y: clamp(-s.scale * (s.cy - H / 2), maxY),
-        };
-      }
-
+      const XFADE = 0.6;
       const tl = gsap.timeline({ paused: true });
 
-      for (const s of scenes) {
-        const el = document.getElementById(s.id);
-        const fade = el.querySelector(".fade");
-        const cam = el.querySelector(".cam");
-        const chip = el.querySelector(".chip");
-        const t = target(s);
-
-        tl.fromTo(fade, { opacity: 0 }, { opacity: 1, duration: XFADE, ease: "power1.inOut" }, s.start);
-        tl.fromTo(
-          cam,
-          { scale: 1, x: 0, y: 0 },
-          { scale: s.scale, x: t.x, y: t.y, duration: HOLD, ease: "power2.inOut" },
-          s.start,
-        );
-        tl.fromTo(chip, { opacity: 0, y: 18 }, { opacity: 1, y: 0, duration: 0.5, ease: "power3.out" }, s.start + 0.35);
-        // Clear the caption before the next scene fades in, so two captions never ghost over each other.
-        tl.to(chip, { opacity: 0, y: -10, duration: 0.3, ease: "power2.in" }, s.start + HOLD - XFADE - 0.35);
+      // Each layer fades in over the one before it, so there is never a dip to black.
+      const fades = [
+        ["#l2", 3.4],
+        ["#l3", 8.8],
+        ["#l4", 12.0],
+        ["#l5", 15.6],
+        ["#l6", 21.2],
+      ];
+      for (const [sel, at] of fades) {
+        tl.fromTo(sel, { opacity: 0 }, { opacity: 1, duration: XFADE, ease: "power1.inOut" }, at);
       }
+      tl.fromTo("#l7 img", { opacity: 0 }, { opacity: 1, duration: XFADE, ease: "power1.inOut" }, 25.6);
 
-      // Closing welcome fades in over SVG Studio and holds still, matching frame 0.
-      tl.fromTo("#s7 .fade", { opacity: 0 }, { opacity: 1, duration: XFADE, ease: "power1.inOut" }, 23.0);
+      // Captions arrive after the crossfade and leave before the next one begins.
+      const chips = [
+        ["#c2", 3.4, 6],
+        ["#c3", 8.8, 3.8],
+        ["#c4", 12.0, 4.2],
+        ["#c5", 15.6, 6.2],
+        ["#c6", 21.2, 5],
+      ];
+      for (const [sel, at, dur] of chips) {
+        tl.fromTo(`${sel} .chip`, { opacity: 0, y: 18 }, { opacity: 1, y: 0, duration: 0.5, ease: "power3.out" }, at + 0.35);
+        tl.to(`${sel} .chip`, { opacity: 0, y: -10, duration: 0.3, ease: "power2.in" }, at + dur - XFADE - 0.35);
+      }
 
       window.__timelines["main"] = tl;
     </script>
