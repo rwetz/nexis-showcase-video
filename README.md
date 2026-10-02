@@ -23,3 +23,9 @@ ffmpeg -y -i master.mp4 -frames:v 1 -vf "scale=1280:800:flags=lanczos" -q:v 3 ne
 
 Keep each video under 3 MB, then copy the three files to
 `nexis-website/public/video/`.
+
+## License
+
+Apache-2.0 (see `LICENSE`), like the rest of Nexis. The Geist and Geist Mono
+fonts in `assets/fonts/` are © The Geist Project Authors under the SIL Open Font
+License 1.1 (`assets/fonts/OFL.txt`).
