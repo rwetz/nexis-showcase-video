@@ -33,3 +33,12 @@ Keep each video under 3 MB, then copy the three files to
 Apache-2.0 (see `LICENSE`), like the rest of Nexis. The Geist and Geist Mono
 fonts in `assets/fonts/` are © The Geist Project Authors under the SIL Open Font
 License 1.1 (`assets/fonts/OFL.txt`).
+
+---
+
+<p align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="docs/brand/heptagram-white.svg">
+    <img src="docs/brand/heptagram-black.svg" alt="heptagram" width="48">
+  </picture>
+</p>
