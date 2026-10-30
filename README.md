@@ -1,4 +1,14 @@
-# Nexis showcase loop
+<p align="center">
+  <img src="assets/logo.svg" width="128" alt="Nexis logo">
+</p>
+
+<h1 align="center">Nexis showcase loop</h1>
+
+<p align="center">
+  The 26-second silent loop behind the "One window, every job." section of nexisdev.org.
+</p>
+
+![The Nexis editor, one of the shots in the loop](assets/shots/editor.webp)
 
 The 26-second silent loop in the "One window, every job." (`#tour`) section of
 nexisdev.org. It is cut from real app clips (`assets/clips/`) that Nexis's
